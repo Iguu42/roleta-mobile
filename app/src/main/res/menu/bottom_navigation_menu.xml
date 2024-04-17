@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/icon_home"
+        android:title="" />
+
+    <item
+        android:id="@+id/store"
+        android:icon="@drawable/icon_store"
+        android:title="" />
+
+    <item
+        android:id="@+id/roulletes"
+        android:icon="@drawable/icon_roullete"
+        android:title="" />
+
+    <item
+        android:id="@+id/play"
+        android:icon="@drawable/icon_play"
+        android:title="" />
+
+</menu>
