@@ -1,4 +1,4 @@
-package com.example.roleta_mobile;
+package com.example.roleta;
 
 import org.junit.Test;
 

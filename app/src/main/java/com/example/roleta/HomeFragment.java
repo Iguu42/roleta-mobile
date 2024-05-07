@@ -1,15 +1,23 @@
-package com.example.roleta_mobile;
+package com.example.roleta;
 
 import android.os.Bundle;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import androidx.fragment.app.Fragment;
-import com.example.roleta_mobile.databinding.FragmentHomeBinding;
+
+import com.example.roleta.databinding.ActivityMainBinding;
+import com.example.roleta.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
+    FragmentHomeBinding binding;
     public HomeFragment() {
+        // Required empty public constructor
     }
 
     @Override

@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "roleta-mobile"
+rootProject.name = "roleta"
 include(":app")
  

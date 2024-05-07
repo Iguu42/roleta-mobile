@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.roleta_mobile"
+    namespace = "com.example.roleta"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.roleta_mobile"
+        applicationId = "com.example.roleta"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -37,6 +37,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

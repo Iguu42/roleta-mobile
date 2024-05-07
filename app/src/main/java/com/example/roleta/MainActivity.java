@@ -1,16 +1,12 @@
-package com.example.roleta_mobile;
+package com.example.roleta;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
+import com.example.roleta.databinding.ActivityMainBinding;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import com.example.roleta_mobile.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
@@ -24,6 +20,15 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()){
                 case R.id.home:
                     replaceFragment(new HomeFragment());
+                    break;
+                case R.id.store:
+                    replaceFragment(new CreateRouletteFragment());
+                    break;
+                case R.id.roulletes:
+                    replaceFragment(new PredefinedRoulettesFragment());
+                    break;
+                case R.id.play:
+                    replaceFragment(new PlayRouletteFragment());
                     break;
             }
             return true;
