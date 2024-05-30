@@ -17,7 +17,7 @@ public class RouletteView extends View {
     private Paint paint;
     private int[] colors = new int[] { Color.parseColor("#05DBF3"), Color.parseColor("#F21A05"), Color.parseColor("#FFD700")}; // Cores das seções
     private int sections = 6; // Número de seções na roleta
-    private String[] sectionNames = {"Filme 1", "Filme 2", "filme 3"}; // Nomes das seções, será atualizado dinamicamente
+    private String[] sectionNames = {"Filme 1", "Filme 2", "Filme 3"}; // Nomes das seções, será atualizado dinamicamente
 
     public RouletteView(Context context) {
         super(context);
@@ -45,7 +45,7 @@ public class RouletteView extends View {
         int cx = width / 2;
         int cy = height / 2;
 
-        float angleStep = 360 / sections;
+        float angleStep = 360f / sections;
         float textAngleDegrees;
 
         for (int i = 0; i < sections; i++) {
@@ -74,7 +74,7 @@ public class RouletteView extends View {
 
     public void setSections(String[] sections) {
         this.sectionNames = sections;
-        this.sections = sections.length;
+        this.sections = sections.length * 2;
     }
 
     public void rotateRoulette(int duration) {
