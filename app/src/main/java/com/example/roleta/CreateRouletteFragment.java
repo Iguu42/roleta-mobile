@@ -82,24 +82,47 @@ public class CreateRouletteFragment extends Fragment {
     private void saveOptionsToBack4App(ParseObject roulette, String option1, String option2, String option3) {
         ParseRelation<ParseObject> relation = roulette.getRelation("opcoes");
 
-        saveOption(option1, relation);
-        saveOption(option2, relation);
-        saveOption(option3, relation);
-
-        roulette.saveInBackground(new SaveCallback() {
+        saveOption(option1, relation, new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Toast.makeText(getActivity(), "Roleta e opções criadas com sucesso!", Toast.LENGTH_SHORT).show();
-                    handleButtonClick(R.id.play);
+                    saveOption(option2, relation, new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                saveOption(option3, relation, new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e == null) {
+                                            roulette.saveInBackground(new SaveCallback() {
+                                                @Override
+                                                public void done(ParseException e) {
+                                                    if (e == null) {
+                                                        Toast.makeText(getActivity(), "Roleta e opções criadas com sucesso!", Toast.LENGTH_SHORT).show();
+                                                        handleButtonClick(R.id.play);
+                                                    } else {
+                                                        Toast.makeText(getActivity(), "Erro ao salvar roleta: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                                    }
+                                                }
+                                            });
+                                        } else {
+                                            Toast.makeText(getActivity(), "Erro ao salvar opção 3: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(getActivity(), "Erro ao salvar opção 2: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
                 } else {
-                    Toast.makeText(getActivity(), "Erro ao salvar opções: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Erro ao salvar opção 1: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
-    private void saveOption(String option, ParseRelation<ParseObject> relation) {
+    private void saveOption(String option, ParseRelation<ParseObject> relation, SaveCallback callback) {
         ParseObject optionObject = new ParseObject("opcoes");
         optionObject.put("opcao", option);
         optionObject.saveInBackground(new SaveCallback() {
@@ -107,8 +130,9 @@ public class CreateRouletteFragment extends Fragment {
             public void done(ParseException e) {
                 if (e == null) {
                     relation.add(optionObject);
+                    callback.done(null);
                 } else {
-                    Toast.makeText(getActivity(), "Erro ao criar opção: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    callback.done(e);
                 }
             }
         });
