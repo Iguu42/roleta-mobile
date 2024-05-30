@@ -8,59 +8,117 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CreateRouletteFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.parse.ParseObject;
+import com.parse.ParseException;
+import com.parse.ParseRelation;
+import com.parse.SaveCallback;
+
 public class CreateRouletteFragment extends Fragment {
 
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private EditText editTextTitle;
+    private EditText editTextOption1;
+    private EditText editTextOption2;
+    private EditText editTextOption3;
+    private Button createButton;
 
     public CreateRouletteFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CreateRouletteFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CreateRouletteFragment newInstance(String param1, String param2) {
-        CreateRouletteFragment fragment = new CreateRouletteFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_roulette, container, false);
+        View view = inflater.inflate(R.layout.fragment_create_roulette, container, false);
 
+        editTextTitle = view.findViewById(R.id.editTextTitulo);
+        editTextOption1 = view.findViewById(R.id.editTextOpcao1);
+        editTextOption2 = view.findViewById(R.id.editTextOpcao2);
+        editTextOption3 = view.findViewById(R.id.editTextOpcao3);
+        createButton = view.findViewById(R.id.buttonCriar);
+
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String title = editTextTitle.getText().toString();
+                String option1 = editTextOption1.getText().toString();
+                String option2 = editTextOption2.getText().toString();
+                String option3 = editTextOption3.getText().toString();
+
+                if (title.isEmpty() || option1.isEmpty() || option2.isEmpty() || option3.isEmpty()) {
+                    Toast.makeText(getActivity(), "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show();
+                } else {
+                    saveRouletteToBack4App(title, option1, option2, option3);
+                }
+            }
+        });
+
+        return view;
+    }
+
+    private void saveRouletteToBack4App(String title, String option1, String option2, String option3) {
+        ParseObject roulette = new ParseObject("roletas");
+        roulette.put("titulo", title);
+
+        roulette.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    saveOptionsToBack4App(roulette, option1, option2, option3);
+                } else {
+                    Toast.makeText(getActivity(), "Erro ao criar roleta: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void saveOptionsToBack4App(ParseObject roulette, String option1, String option2, String option3) {
+        ParseRelation<ParseObject> relation = roulette.getRelation("opcoes");
+
+        saveOption(option1, relation);
+        saveOption(option2, relation);
+        saveOption(option3, relation);
+
+        roulette.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Toast.makeText(getActivity(), "Roleta e opções criadas com sucesso!", Toast.LENGTH_SHORT).show();
+                    handleButtonClick(R.id.play);
+                } else {
+                    Toast.makeText(getActivity(), "Erro ao salvar opções: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void saveOption(String option, ParseRelation<ParseObject> relation) {
+        ParseObject optionObject = new ParseObject("opcoes");
+        optionObject.put("opcao", option);
+        optionObject.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    relation.add(optionObject);
+                } else {
+                    Toast.makeText(getActivity(), "Erro ao criar opção: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void handleButtonClick(int menuItemId) {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null) {
+            mainActivity.replaceFragment(new PlayRouletteFragment());
+            mainActivity.binding.bottomNavigationView.setSelectedItemId(menuItemId);
+        }
     }
 }

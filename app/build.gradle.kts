@@ -42,4 +42,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation("com.github.parse-community.Parse-SDK-Android:parse:1.26.0")
+    implementation("com.github.parse-community:ParseLiveQuery-Android:1.2.2")
 }

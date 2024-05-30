@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/tituloView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_semibold"
@@ -27,7 +27,7 @@
             app:layout_constraintVertical_bias="0.095" />
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/editTextTitulo"
             style="@style/Edit_Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             app:layout_constraintVertical_bias="0.231" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/textoTitulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
@@ -58,7 +58,7 @@
             app:layout_constraintVertical_bias="0.179" />
 
         <TextView
-            android:id="@+id/textOptions"
+            android:id="@+id/textoOpcoes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
@@ -73,7 +73,7 @@
             app:layout_constraintVertical_bias="0.316" />
 
         <EditText
-            android:id="@+id/editTextOptions1"
+            android:id="@+id/editTextOpcao1"
             style="@style/Edit_Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
             app:layout_constraintVertical_bias="0.38" />
 
         <EditText
-            android:id="@+id/editTextOptions2"
+            android:id="@+id/editTextOpcao2"
             style="@style/Edit_Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
             app:layout_constraintVertical_bias="0.499" />
 
         <EditText
-            android:id="@+id/editTextOptions3"
+            android:id="@+id/editTextOpcao3"
             style="@style/Edit_Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
             app:layout_constraintVertical_bias="0.617" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonCriar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#F29F05"
