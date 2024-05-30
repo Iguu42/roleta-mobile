@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -22,6 +23,7 @@ public class PlayRouletteFragment extends Fragment {
 
     private RouletteView rouletteView;
     private ImageView spinButton;
+    private TextView titleTextView;
 
     public PlayRouletteFragment() {
         // Required empty public constructor
@@ -34,6 +36,7 @@ public class PlayRouletteFragment extends Fragment {
 
         rouletteView = view.findViewById(R.id.rouletteView4);
         spinButton = view.findViewById(R.id.imageView);
+        titleTextView = view.findViewById(R.id.textView6);
 
         spinButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +59,8 @@ public class PlayRouletteFragment extends Fragment {
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null && !objects.isEmpty()) {
                     ParseObject latestRoulette = objects.get(0);
+                    String title = latestRoulette.getString("titulo");
+                    titleTextView.setText(title); // Atualiza o título dinamicamente
                     fetchOptions(latestRoulette);
                 } else {
                     Toast.makeText(getActivity(), "Erro ao buscar roleta: " + (e != null ? e.getMessage() : "Nenhuma roleta encontrada"), Toast.LENGTH_LONG).show();
