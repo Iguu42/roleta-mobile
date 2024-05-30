@@ -8,61 +8,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PlayRouletteFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+
+import java.util.List;
+
 public class PlayRouletteFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private RouletteView rouletteView;
+    private ImageView spinButton;
 
     public PlayRouletteFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PlayRouletteFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PlayRouletteFragment newInstance(String param1, String param2) {
-        PlayRouletteFragment fragment = new PlayRouletteFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_play_roulette, container, false);
+        View view = inflater.inflate(R.layout.fragment_play_roulette, container, false);
 
-        RouletteView rouletteView = view.findViewById(R.id.rouletteView4);
-        ImageView spinButton = view.findViewById(R.id.imageView);
+        rouletteView = view.findViewById(R.id.rouletteView4);
+        spinButton = view.findViewById(R.id.imageView);
+
         spinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +42,49 @@ public class PlayRouletteFragment extends Fragment {
             }
         });
 
-        return view;
+        fetchLatestRoulette();
 
+        return view;
+    }
+
+    private void fetchLatestRoulette() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("roletas");
+        query.addDescendingOrder("createdAt");
+        query.setLimit(1);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null && !objects.isEmpty()) {
+                    ParseObject latestRoulette = objects.get(0);
+                    fetchOptions(latestRoulette);
+                } else {
+                    Toast.makeText(getActivity(), "Erro ao buscar roleta: " + (e != null ? e.getMessage() : "Nenhuma roleta encontrada"), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void fetchOptions(ParseObject roulette) {
+        ParseRelation<ParseObject> relation = roulette.getRelation("opcoes");
+        ParseQuery<ParseObject> query = relation.getQuery();
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    String[] options = new String[objects.size()];
+                    for (int i = 0; i < objects.size(); i++) {
+                        options[i] = objects.get(i).getString("opcao");
+                    }
+                    updateRouletteView(options);
+                } else {
+                    Toast.makeText(getActivity(), "Erro ao buscar opções: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void updateRouletteView(String[] options) {
+        rouletteView.setSections(options);
+        rouletteView.invalidate(); // Redesenha a roleta com as novas opções
     }
 }

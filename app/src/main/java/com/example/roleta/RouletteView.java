@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 
 import androidx.annotation.Nullable;
@@ -16,8 +15,9 @@ import androidx.annotation.Nullable;
 public class RouletteView extends View {
 
     private Paint paint;
-    private int[] colors = new int[] { Color.parseColor("#05DBF3"), Color.parseColor("#F21A05")}; // Cores das seções
+    private int[] colors = new int[] { Color.parseColor("#05DBF3"), Color.parseColor("#F21A05"), Color.parseColor("#FFD700")}; // Cores das seções
     private int sections = 6; // Número de seções na roleta
+    private String[] sectionNames = {"Filme 1", "Filme 2", "filme 3"}; // Nomes das seções, será atualizado dinamicamente
 
     public RouletteView(Context context) {
         super(context);
@@ -28,8 +28,6 @@ public class RouletteView extends View {
         super(context, attrs);
         init();
     }
-
-    private String[] sectionNames = {"Filme 1", "Filme 2"}; // Adicione mais nomes conforme necessário
 
     private void init() {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -67,13 +65,17 @@ public class RouletteView extends View {
                     cy + radius * 0.75f * (float) Math.sin(Math.toRadians(textAngleDegrees)));
             // Rotacionar o canvas para alinhar o texto verticalmente
             canvas.rotate(textAngleDegrees + 90); // +90 para alinhar verticalmente
-            // Desenhar o texto
+            // Desenhar o texto, usando módulo para repetir cíclicamente
             canvas.drawText(sectionNames[i % sectionNames.length], 0, 0, paint);
             // Restaurar o estado do canvas
             canvas.restore();
         }
     }
 
+    public void setSections(String[] sections) {
+        this.sectionNames = sections;
+        this.sections = sections.length;
+    }
 
     public void rotateRoulette(int duration) {
         // Gera um número aleatório para o ângulo de parada
@@ -104,5 +106,4 @@ public class RouletteView extends View {
 
         startAnimation(rotateAnim);
     }
-
 }
