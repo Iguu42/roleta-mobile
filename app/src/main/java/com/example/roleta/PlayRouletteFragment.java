@@ -34,7 +34,7 @@ public class PlayRouletteFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_play_roulette, container, false);
 
-        rouletteView = view.findViewById(R.id.rouletteView4);
+        rouletteView = view.findViewById(R.id.rvHome1);
         spinButton = view.findViewById(R.id.imageView);
         titleTextView = view.findViewById(R.id.textView6);
 

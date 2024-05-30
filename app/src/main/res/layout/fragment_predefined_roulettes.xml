@@ -27,7 +27,7 @@
             app:layout_constraintVertical_bias="0.125" />
 
         <com.example.roleta.RouletteView
-            android:id="@+id/rouletteView3"
+            android:id="@+id/rvHome3"
             android:layout_width="144dp"
             android:layout_height="137dp"
             android:layout_gravity="center"
@@ -40,13 +40,13 @@
             tools:ignore="DuplicateIds" />
 
         <com.example.roleta.RouletteView
-            android:id="@+id/rouletteView4"
+            android:id="@+id/rvHome1"
             android:layout_width="144dp"
             android:layout_height="137dp"
             android:layout_gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/rouletteView3"
+            app:layout_constraintStart_toEndOf="@+id/rvHome3"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.292"
             tools:ignore="DuplicateIds" />
@@ -64,7 +64,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.241"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rouletteView3"
+            app:layout_constraintTop_toBottomOf="@+id/rvHome3"
             app:layout_constraintVertical_bias="0.03" />
 
         <TextView
@@ -81,7 +81,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.764"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rouletteView4"
+            app:layout_constraintTop_toBottomOf="@+id/rvHome1"
             app:layout_constraintVertical_bias="0.048" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
