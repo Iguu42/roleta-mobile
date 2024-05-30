@@ -1,9 +1,15 @@
 package com.example.roleta;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +23,16 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class PlayRouletteFragment extends Fragment {
 
     private RouletteView rouletteView;
     private ImageView spinButton;
+    private ImageView shareButton;
     private TextView titleTextView;
 
     public PlayRouletteFragment() {
@@ -35,13 +45,21 @@ public class PlayRouletteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_play_roulette, container, false);
 
         rouletteView = view.findViewById(R.id.rvHome1);
-        spinButton = view.findViewById(R.id.imageView);
-        titleTextView = view.findViewById(R.id.textView6);
+        spinButton = view.findViewById(R.id.imageViewPlay);
+        shareButton = view.findViewById(R.id.imageViewShare);
+        titleTextView = view.findViewById(R.id.textViewTitlePlay);
 
         spinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rouletteView.rotateRoulette(6000);
+            }
+        });
+
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareScreenshot();
             }
         });
 
@@ -90,6 +108,34 @@ public class PlayRouletteFragment extends Fragment {
 
     private void updateRouletteView(String[] options) {
         rouletteView.setSections(options);
-        rouletteView.invalidate(); // Redesenha a roleta com as novas opções
+        rouletteView.invalidate();
+    }
+
+    private void shareScreenshot() {
+        View rootView = getView();
+        if (rootView == null) return;
+        rootView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(rootView.getDrawingCache());
+        rootView.setDrawingCacheEnabled(false);
+
+        File cachePath = new File(getContext().getCacheDir(), "images");
+        cachePath.mkdirs();
+        File file = new File(cachePath, "image.png");
+        try (FileOutputStream stream = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        } catch (IOException e) {
+            Log.e("PlayRouletteFragment", "Erro ao salvar a captura de tela", e);
+            return;
+        }
+
+        Uri contentUri = FileProvider.getUriForFile(getContext(), "com.example.roleta.fileprovider", file);
+        if (contentUri != null) {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            shareIntent.setDataAndType(contentUri, getContext().getContentResolver().getType(contentUri));
+            shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+            startActivity(Intent.createChooser(shareIntent, "Compartilhar via"));
+        }
     }
 }

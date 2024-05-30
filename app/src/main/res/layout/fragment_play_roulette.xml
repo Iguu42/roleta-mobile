@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/textViewTitlePlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_semibold"
@@ -39,7 +39,7 @@
             tools:ignore="DuplicateIds" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/imageViewPlay"
             android:layout_width="74dp"
             android:layout_height="64dp"
             android:src="@drawable/spin_bt"
@@ -51,7 +51,7 @@
             app:layout_constraintVertical_bias="0.111" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/imageViewEditRoulette"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/edit_bt_bg"
@@ -76,7 +76,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imageViewShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/share_bt"
@@ -88,14 +88,14 @@
             app:layout_constraintVertical_bias="0.071" />
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/textViewSubTitlePlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
             android:text="Roleta"
             android:textColor="#A5A5A5"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView6"
+            app:layout_constraintBottom_toTopOf="@+id/textViewTitlePlay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.48"
             app:layout_constraintStart_toStartOf="parent"
