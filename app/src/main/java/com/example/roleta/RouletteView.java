@@ -15,9 +15,11 @@ import androidx.annotation.Nullable;
 public class RouletteView extends View {
 
     private Paint paint;
-    private int[] colors = new int[] { Color.parseColor("#05DBF3"), Color.parseColor("#F21A05"), Color.parseColor("#FFD700")}; // Cores das seções
-    private int sections = 6; // Número de seções na roleta
-    private String[] sectionNames = {"", "", ""}; // Nomes das seções, será atualizado dinamicamente
+    private int[] colors = new int[] { Color.parseColor("#05DBF3"), Color.parseColor("#6805F3"), Color.parseColor("#FFD700")};
+    private int sections = 6;
+    private String[] sectionNames = {"", "", ""};
+    private int finalAngle;
+    private RouletteListener listener;
 
     public RouletteView(Context context) {
         super(context);
@@ -32,7 +34,7 @@ public class RouletteView extends View {
     private void init() {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.FILL);
-        paint.setTextSize(30); // Ajuste o tamanho do texto conforme necessário
+        paint.setTextSize(30);
         paint.setTextAlign(Paint.Align.CENTER);
     }
 
@@ -54,20 +56,14 @@ public class RouletteView extends View {
             canvas.drawArc(cx - radius, cy - radius, cx + radius, cy + radius,
                     startAngle, angleStep, true, paint);
 
-            // Ajustar para o ângulo de desenho do texto
             textAngleDegrees = startAngle + angleStep / 2;
-            paint.setColor(Color.WHITE); // Define a cor do texto
+            paint.setColor(Color.WHITE);
 
-            // Salvar o estado do canvas
             canvas.save();
-            // Translate para o ponto onde o texto será desenhado
             canvas.translate(cx + radius * 0.75f * (float) Math.cos(Math.toRadians(textAngleDegrees)),
                     cy + radius * 0.75f * (float) Math.sin(Math.toRadians(textAngleDegrees)));
-            // Rotacionar o canvas para alinhar o texto verticalmente
-            canvas.rotate(textAngleDegrees + 90); // +90 para alinhar verticalmente
-            // Desenhar o texto, usando módulo para repetir cíclicamente
+            canvas.rotate(textAngleDegrees + 90);
             canvas.drawText(sectionNames[i % sectionNames.length], 0, 0, paint);
-            // Restaurar o estado do canvas
             canvas.restore();
         }
     }
@@ -78,15 +74,14 @@ public class RouletteView extends View {
     }
 
     public void rotateRoulette(int duration) {
-        // Gera um número aleatório para o ângulo de parada
-        int finalAngle = (int) (360f * 5 + Math.random() * 360);
+        finalAngle = (int) (360f * 5 + Math.random() * 360);
         RotateAnimation rotateAnim = new RotateAnimation(0f, finalAngle,
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
 
         rotateAnim.setInterpolator(new DecelerateInterpolator());
         rotateAnim.setDuration(duration);
-        rotateAnim.setFillAfter(true); // Importante para manter a vista na posição final
+        rotateAnim.setFillAfter(true);
         rotateAnim.setRepeatCount(0);
 
         rotateAnim.setAnimationListener(new Animation.AnimationListener() {
@@ -96,6 +91,7 @@ public class RouletteView extends View {
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                displaySelectedSection();
             }
 
             @Override
@@ -104,5 +100,29 @@ public class RouletteView extends View {
         });
 
         startAnimation(rotateAnim);
+    }
+
+    private void displaySelectedSection() {
+        int anglePerSection = 360 / sections;
+        int normalizedAngle = finalAngle % 360;
+        int selectedSection = (normalizedAngle + anglePerSection / 2) / anglePerSection;
+        selectedSection = sections + 1 - selectedSection;
+
+        if (selectedSection >= sectionNames.length) {
+            selectedSection = selectedSection % sectionNames.length;
+        }
+
+        String selectedText = sectionNames[selectedSection];
+        if (listener != null) {
+            listener.onSectionSelected(selectedText);
+        }
+    }
+
+    public void setRouletteListener(RouletteListener listener) {
+        this.listener = listener;
+    }
+
+    public interface RouletteListener {
+        void onSectionSelected(String selectedSection);
     }
 }
