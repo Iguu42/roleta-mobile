@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -93,7 +94,13 @@ public class PlayRouletteFragment extends Fragment implements SensorEventListene
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-        fetchLatestRoulette();
+        Bundle args = getArguments();
+        if (args != null && args.containsKey("ROULETTE_ID")) {
+            rouletteId = args.getString("ROULETTE_ID");
+            fetchRouletteById(rouletteId);
+        } else {
+            fetchLatestRoulette();
+        }
 
         return view;
     }
@@ -102,7 +109,11 @@ public class PlayRouletteFragment extends Fragment implements SensorEventListene
     public void onResume() {
         super.onResume();
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
-        fetchLatestRoulette();
+        if (rouletteId != null) {
+            fetchRouletteById(rouletteId);
+        } else {
+            fetchLatestRoulette();
+        }
     }
 
     @Override
@@ -144,7 +155,6 @@ public class PlayRouletteFragment extends Fragment implements SensorEventListene
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // ignore
     }
 
     private void fetchLatestRoulette() {
@@ -162,6 +172,22 @@ public class PlayRouletteFragment extends Fragment implements SensorEventListene
                     fetchOptions(latestRoulette);
                 } else {
                     Toast.makeText(getActivity(), "Erro ao buscar roleta: " + (e != null ? e.getMessage() : "Nenhuma roleta encontrada"), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void fetchRouletteById(String id) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("roletas");
+        query.getInBackground(id, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject roulette, ParseException e) {
+                if (e == null) {
+                    String title = roulette.getString("titulo");
+                    titleTextView.setText(title);
+                    fetchOptions(roulette);
+                } else {
+                    Toast.makeText(getActivity(), "Erro ao buscar roleta: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });

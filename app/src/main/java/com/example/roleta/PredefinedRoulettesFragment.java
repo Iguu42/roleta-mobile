@@ -28,7 +28,6 @@ public class PredefinedRoulettesFragment extends Fragment {
     private static final String TAG = "PredefinedRoulettesFragment";
 
     public PredefinedRoulettesFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -45,7 +44,7 @@ public class PredefinedRoulettesFragment extends Fragment {
     private void fetchRoulettes() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("roletas");
         query.addDescendingOrder("createdAt");
-        query.setLimit(8); // Limitar para buscar até 8 roletas
+        query.setLimit(8);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -65,7 +64,6 @@ public class PredefinedRoulettesFragment extends Fragment {
     private void addRouletteToView(ParseObject roulette) {
         String title = roulette.getString("titulo");
 
-        // Adicionar RouletteView
         RouletteView rouletteView = new RouletteView(getContext());
         GridLayout.LayoutParams rouletteParams = new GridLayout.LayoutParams();
         rouletteParams.width = 200;
@@ -74,7 +72,6 @@ public class PredefinedRoulettesFragment extends Fragment {
         rouletteView.setLayoutParams(rouletteParams);
         roulettesContainer.addView(rouletteView);
 
-        // Adicionar TextView para o título da roleta
         TextView titleView = new TextView(getContext());
         titleView.setText(title);
         titleView.setTextColor(Color.WHITE);
@@ -94,7 +91,13 @@ public class PredefinedRoulettesFragment extends Fragment {
         titleView.setLayoutParams(titleParams);
         roulettesContainer.addView(titleView);
 
-        // Buscar opções para a roleta e atualizar a RouletteView
+        rouletteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPlayRouletteFragment(roulette);
+            }
+        });
+
         ParseRelation<ParseObject> relation = roulette.getRelation("opcoes");
         ParseQuery<ParseObject> query = relation.getQuery();
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -106,12 +109,23 @@ public class PredefinedRoulettesFragment extends Fragment {
                         options[i] = objects.get(i).getString("opcao");
                     }
                     rouletteView.setSections(options);
-                    rouletteView.invalidate(); // Redesenha a roleta com as novas opções
+                    rouletteView.invalidate();
                 } else {
                     Log.e(TAG, "Erro ao buscar opções: " + e.getMessage());
                     Toast.makeText(getActivity(), "Erro ao buscar opções: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });
+    }
+
+    private void openPlayRouletteFragment(ParseObject roulette) {
+        PlayRouletteFragment playRouletteFragment = new PlayRouletteFragment();
+        Bundle args = new Bundle();
+        args.putString("ROULETTE_ID", roulette.getObjectId());
+        playRouletteFragment.setArguments(args);
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null) {
+            mainActivity.replaceFragment(playRouletteFragment);
+        }
     }
 }
