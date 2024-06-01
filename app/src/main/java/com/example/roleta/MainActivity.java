@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.play:
                     replaceFragment(new PlayRouletteFragment());
                     break;
+                case R.id.fragment_container:
+                    replaceFragment(new EditRouletteFragment());
             }
             return true;
         });
