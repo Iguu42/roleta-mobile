@@ -17,7 +17,7 @@ public class RouletteView extends View {
     private Paint paint;
     private int[] colors = new int[] { Color.parseColor("#05DBF3"), Color.parseColor("#F21A05"), Color.parseColor("#FFD700")}; // Cores das seções
     private int sections = 6; // Número de seções na roleta
-    private String[] sectionNames = {"Filme 1", "Filme 2", "Filme 3"}; // Nomes das seções, será atualizado dinamicamente
+    private String[] sectionNames = {"", "", ""}; // Nomes das seções, será atualizado dinamicamente
 
     public RouletteView(Context context) {
         super(context);
@@ -96,7 +96,6 @@ public class RouletteView extends View {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                // Código que será executado quando a rotação terminar
             }
 
             @Override
