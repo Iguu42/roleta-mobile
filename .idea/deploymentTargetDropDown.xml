@@ -2,32 +2,13 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="MainActivity">
+      <entry key="CreateRouletteFragmentTest">
         <State />
-      </entry>
-      <entry key="MainActivity (1)">
-        <State />
-      </entry>
-      <entry key="MainActivity (2)">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\iguu4\.android\avd\Pixel_8_API_31.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-06-01T15:56:31.348538Z" />
-        </State>
       </entry>
       <entry key="app">
         <State />
       </entry>
-      <entry key="useAppContext()">
+      <entry key="testCreateRoulette()">
         <State />
       </entry>
     </value>

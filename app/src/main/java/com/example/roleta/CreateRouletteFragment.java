@@ -18,11 +18,11 @@ import com.parse.SaveCallback;
 
 public class CreateRouletteFragment extends Fragment {
 
-    private EditText editTextTitle;
-    private EditText editTextOption1;
-    private EditText editTextOption2;
-    private EditText editTextOption3;
-    private Button createButton;
+    EditText editTextTitle;
+    EditText editTextOption1;
+    EditText editTextOption2;
+    EditText editTextOption3;
+    Button createButton;
 
     public CreateRouletteFragment() {
         // Required empty public constructor
@@ -35,7 +35,6 @@ public class CreateRouletteFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_create_roulette, container, false);
 
         editTextTitle = view.findViewById(R.id.editTextTitulo);

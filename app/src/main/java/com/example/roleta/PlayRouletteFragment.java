@@ -40,16 +40,16 @@ public class PlayRouletteFragment extends Fragment implements SensorEventListene
     private static final float SHAKE_THRESHOLD_GRAVITY = 2.7F;
     private static final int SHAKE_SLOP_TIME_MS = 500;
     private static final int SHAKE_COUNT_RESET_TIME_MS = 3000;
-    private SensorManager sensorManager;
-    private Sensor accelerometer;
+    SensorManager sensorManager;
+    Sensor accelerometer;
     private long shakeTimestamp;
     private int shakeCount;
 
-    private RouletteView rouletteView;
-    private ImageView spinButton;
-    private ImageView shareButton;
-    private ImageView editButton;
-    private TextView titleTextView;
+    RouletteView rouletteView;
+    ImageView spinButton;
+    ImageView shareButton;
+    ImageView editButton;
+    TextView titleTextView;
     private Vibrator vibrator;
     private String rouletteId;
 
@@ -157,7 +157,7 @@ public class PlayRouletteFragment extends Fragment implements SensorEventListene
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
-    private void fetchLatestRoulette() {
+    void fetchLatestRoulette() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("roletas");
         query.addDescendingOrder("createdAt");
         query.setLimit(1);
@@ -256,7 +256,7 @@ public class PlayRouletteFragment extends Fragment implements SensorEventListene
         }
     }
 
-    private void showResultDialog(String selectedSection) {
+    void showResultDialog(String selectedSection) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Resultado");
         builder.setMessage(selectedSection);
