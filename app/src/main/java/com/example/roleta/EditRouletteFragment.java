@@ -19,11 +19,11 @@ import com.parse.SaveCallback;
 
 public class EditRouletteFragment extends Fragment {
 
-    private EditText editTextTitle;
-    private EditText editTextOption1;
-    private EditText editTextOption2;
-    private EditText editTextOption3;
-    private Button updateButton;
+    EditText editTextTitle;
+    EditText editTextOption1;
+    EditText editTextOption2;
+    EditText editTextOption3;
+    Button updateButton;
     private String rouletteId;
 
     public EditRouletteFragment() {
