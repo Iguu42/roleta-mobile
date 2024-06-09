@@ -30,6 +30,10 @@ public class HomeFragment extends Fragment {
     private TextView textView3;
     private TextView textView4;
 
+    Button btPredRoulettes;
+
+    Button btCreateRoulettes;
+
     public HomeFragment() {
     }
 
@@ -37,8 +41,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        Button btPredRoulettes = view.findViewById(R.id.btPredRoulettes);
-        Button btCreateRoulettes = view.findViewById(R.id.btCreateRoulettes);
+        btPredRoulettes = view.findViewById(R.id.btPredRoulettes);
+        btCreateRoulettes = view.findViewById(R.id.btCreateRoulettes);
 
         btPredRoulettes.setOnClickListener(view1 -> handleButtonClick(R.id.roulletes));
         btCreateRoulettes.setOnClickListener(view1 -> handleButtonClick(R.id.store));
