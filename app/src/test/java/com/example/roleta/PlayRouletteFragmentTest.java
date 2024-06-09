@@ -1,5 +1,8 @@
 package com.example.roleta;
 
+import static org.mockito.Mockito.verify;
+
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.junit.Before;
@@ -10,16 +13,17 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import com.example.roleta.PlayRouletteFragment;
-
 @RunWith(MockitoJUnitRunner.class)
 public class PlayRouletteFragmentTest {
 
     @Mock
     TextView mockTitleTextView;
+
+    @Mock
+    ImageView mockEditButton;
+
+    @Mock
+    ImageView mockShareButton;
 
     @InjectMocks
     PlayRouletteFragment fragment;
@@ -28,6 +32,9 @@ public class PlayRouletteFragmentTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         fragment.titleTextView = mockTitleTextView;
+
+        fragment.shareButton = mockShareButton;
+        fragment.editButton = mockEditButton;
     }
 
     @Test
@@ -35,5 +42,17 @@ public class PlayRouletteFragmentTest {
         String expectedTitle = "Test Title";
         fragment.titleTextView.setText(expectedTitle);
         verify(mockTitleTextView).setText(expectedTitle);
+    }
+
+    @Test
+    public void testShareButtonClicked() {
+        fragment.shareButton.performClick();
+        verify(mockShareButton).performClick();
+    }
+
+    @Test
+    public void testEditButtonClicked() {
+        fragment.editButton.performClick();
+        verify(mockEditButton).performClick();
     }
 }
